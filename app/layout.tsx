@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { wedding } from "./wedding-config";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -9,13 +10,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const base = new URL(`${protocol}://${host}`);
   return {
     metadataBase: base,
-    title: "김도윤 ♥ 이서연 결혼합니다",
-    description: "2027년 5월 15일 토요일 오후 1시, 라온제나 웨딩홀",
+    title: wedding.share.title,
+    description: `${wedding.share.description}, ${wedding.venue.name}`,
     openGraph: {
-      title: "김도윤 ♥ 이서연 결혼합니다",
-      description: "2027년 5월 15일 토요일 오후 1시, 라온제나 웨딩홀",
+      title: wedding.share.title,
+      description: `${wedding.share.description}, ${wedding.venue.name}`,
       type: "website",
-      images: [{ url: "/og.png", width: 1664, height: 928, alt: "김도윤과 이서연의 모바일 청첩장" }],
+      images: [{ url: "/og.png", width: 1664, height: 928, alt: `${wedding.groom.name}과 ${wedding.bride.name}의 모바일 청첩장` }],
     },
     twitter: { card: "summary_large_image", images: ["/og.png"] },
   };

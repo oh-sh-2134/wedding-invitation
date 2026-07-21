@@ -3,6 +3,16 @@
 import { useEffect, useState } from "react";
 import { wedding } from "./wedding-config";
 
+declare global {
+  interface Window {
+    Kakao?: {
+      init: (key: string) => void;
+      isInitialized: () => boolean;
+      Share: { sendDefault: (options: unknown) => void };
+    };
+  }
+}
+
 const Icon = ({ name }: { name: "copy" | "phone" | "map" | "share" | "close" }) => {
   const paths = {
     copy: <><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></>,
@@ -21,6 +31,11 @@ function SectionTitle({ eyebrow, children }: { eyebrow: string; children: React.
 export default function Home() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
   const [toast, setToast] = useState("");
+  const firstWeekday = new Date(wedding.date.year, wedding.date.month - 1, 1).getDay();
+  const lastDay = new Date(wedding.date.year, wedding.date.month, 0).getDate();
+  const calendarDays = [...Array(firstWeekday).fill(""), ...Array.from({ length: lastDay }, (_, index) => index + 1)];
+  const remainingDays = Math.ceil((new Date(wedding.date.iso).getTime() - Date.now()) / 86_400_000);
+  const countdownLabel = remainingDays >= 0 ? `D-${remainingDays}` : `D+${Math.abs(remainingDays)}`;
 
   useEffect(() => {
     if (selectedPhoto === null) return;
@@ -29,6 +44,15 @@ export default function Home() {
     document.body.style.overflow = "hidden";
     return () => { document.removeEventListener("keydown", close); document.body.style.overflow = ""; };
   }, [selectedPhoto]);
+
+  useEffect(() => {
+    if (!wedding.kakaoJavascriptKey || document.getElementById("kakao-sdk")) return;
+    const script = document.createElement("script");
+    script.id = "kakao-sdk";
+    script.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js";
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
+  }, []);
 
   const notify = (message: string) => {
     setToast(message);
@@ -41,6 +65,23 @@ export default function Home() {
   };
 
   const share = async () => {
+    if (wedding.kakaoJavascriptKey && window.Kakao) {
+      if (!window.Kakao.isInitialized()) window.Kakao.init(wedding.kakaoJavascriptKey);
+      window.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title: wedding.share.title,
+          description: wedding.share.description,
+          imageUrl: new URL("/og.png", window.location.origin).href,
+          link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
+        },
+        buttons: [{
+          title: "모바일 청첩장 보기",
+          link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
+        }],
+      });
+      return;
+    }
     const data = { title: wedding.share.title, text: wedding.share.description, url: window.location.href };
     if (navigator.share) await navigator.share(data);
     else await copy(window.location.href, "청첩장 주소");
@@ -74,10 +115,10 @@ export default function Home() {
         <SectionTitle eyebrow="THE WEDDING DAY">{wedding.date.year}. {wedding.date.month}. {wedding.date.day}</SectionTitle>
         <p className="time-place">{wedding.date.weekday} {wedding.date.time}<br />{wedding.venue.name} {wedding.venue.hall}</p>
         <div className="calendar" aria-label={`${wedding.date.month}월 달력`}>
-          {wedding.calendar.weekdays.map((day) => <span className="weekday" key={day}>{day}</span>)}
-          {wedding.calendar.days.map((day, index) => <span key={`${day}-${index}`} className={day === wedding.date.day ? "wedding-day" : ""}>{day || ""}</span>)}
+          {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((day) => <span className="weekday" key={day}>{day}</span>)}
+          {calendarDays.map((day, index) => <span key={`${day}-${index}`} className={day === wedding.date.day ? "wedding-day" : ""}>{day || ""}</span>)}
         </div>
-        <p className="d-day">우리의 결혼식까지 <strong>{wedding.date.countdownLabel}</strong></p>
+        <p className="d-day">우리의 결혼식까지 <strong>{countdownLabel}</strong></p>
       </section>
 
       <section className="gallery section">
