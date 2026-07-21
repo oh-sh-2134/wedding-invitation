@@ -12,9 +12,9 @@ export const wedding = {
     bank: "국민은행", account: "012345-67-890123", accountHolder: "이서연",
   },
   date: {
-    iso: "2027-12-13T12:30:00+09:00",
-    display: "2027. 12. 13. MON. 12:30 PM", year: 2027, month: 12, day: 13,
-    weekday: "월요일", time: "오후 12시 30분",
+    iso: "2026-12-13T12:30:00+09:00",
+    display: "2026. 12. 13. SUN. 12:30 PM", year: 2026, month: 12, day: 13,
+    weekday: "일요일", time: "오후 12시 30분",
   },
   message: "서로의 가장 좋은 친구로 지내온 두 사람이\n이제 같은 방향을 바라보며 걸어가려 합니다.\n저희의 첫걸음에 귀한 시간을 내어 함께해 주시면\n더없는 기쁨으로 간직하겠습니다.",
   venue: {
@@ -39,5 +39,5 @@ export const wedding = {
       "https://images.unsplash.com/photo-1496196614460-48988a57fccf?auto=format&fit=crop&w=900&q=82",
     ],
   },
-  share: { title: "오승현 ♥ 이영미 결혼합니다", description: "2027년 12월 13일 월요일 오후 12시 30분" },
+  share: { title: "오승현 ♥ 이영미 결혼합니다", description: "2026년 12월 13일 일요일 오후 12시 30분" },
 } as const;
