@@ -72,7 +72,7 @@ export default function Home() {
         content: {
           title: wedding.share.title,
           description: wedding.share.description,
-          imageUrl: new URL("/og.png", window.location.origin).href,
+          imageUrl: wedding.photos.cover,
           link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
         },
         buttons: [{
