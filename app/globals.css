@@ -38,7 +38,7 @@ main { width:min(100%, 500px); margin:0 auto; overflow:hidden; background:var(--
 .calendar .wedding-day { position:relative; z-index:1; color:white; }
 .calendar .wedding-day::before { content:""; position:absolute; z-index:-1; width:32px; height:32px; border-radius:50%; background:var(--sage); }
 .d-day { font-size:12px; margin:27px 0 0; color:var(--muted); }.d-day strong{color:var(--sage);}
-.photo-grid { display:grid; grid-template-columns:1.15fr .85fr; grid-template-rows:175px 175px 145px; gap:8px; }
+.photo-grid { display:grid; grid-template-columns:1.15fr .85fr; grid-template-rows:175px 175px 145px 180px; gap:8px; }
 .photo-grid button { padding:0; border:0; overflow:hidden; cursor:zoom-in; background:#eee; }
 .photo-grid .featured { grid-row:span 2; }
 .photo-grid button:last-child { grid-column:span 2; }
@@ -58,5 +58,5 @@ main { width:min(100%, 500px); margin:0 auto; overflow:hidden; background:var(--
 footer { padding:75px 25px 55px; text-align:center; background:#5f675a; color:#f6f4ef; }.footer-names{font-family:var(--serif);font-size:27px;margin:0 0 12px}.footer-names span{margin:0 8px;color:#cdd4c7;font-style:italic}footer>p:nth-child(2){font-size:11px;color:#dfe3dc;margin-bottom:35px}footer button{margin:auto;border:1px solid #98a192;background:transparent;color:white;padding:13px 24px;display:flex;gap:8px;align-items:center;cursor:pointer;font-size:12px}
 .lightbox { position:fixed;inset:0;z-index:1000;background:rgba(20,22,19,.94);display:grid;place-items:center;padding:40px 15px }.lightbox img{max-width:100%;max-height:88vh;object-fit:contain}.lightbox-close{position:absolute;top:20px;right:20px;background:none;border:0;color:white;padding:8px;cursor:pointer}.lightbox-close .icon{width:28px;height:28px}
 .toast { position:fixed;z-index:1100;left:50%;bottom:25px;transform:translate(-50%,20px);padding:11px 18px;border-radius:30px;background:#33382f;color:white;font-size:11px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}.toast.visible{opacity:1;transform:translate(-50%,0)}
-@media (max-width:360px){.hero h1{font-size:32px}.section{padding-left:20px;padding-right:20px}.photo-grid{grid-template-rows:150px 150px 125px}}
+@media (max-width:360px){.hero h1{font-size:32px}.section{padding-left:20px;padding-right:20px}.photo-grid{grid-template-rows:150px 150px 125px 165px}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}

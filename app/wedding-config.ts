@@ -1,4 +1,7 @@
 // 나중에 실제 정보로 바꿀 때는 이 파일만 수정하면 됩니다.
+const weddingPhoto = (fileName: string) =>
+  `${import.meta.env.BASE_URL}images/wedding/${fileName}`;
+
 export const wedding = {
   // 카카오 Developers의 JavaScript 키를 입력하면 카카오톡 공유가 활성화됩니다.
   // 예: kakaoJavascriptKey: "1234567890abcdef1234567890abcdef"
@@ -27,16 +30,15 @@ export const wedding = {
     { title: "주차", description: "건물 지하 주차장 2시간 무료 이용 가능" },
   ],
   photos: {
-    // 실제 사진은 public/images/wedding 폴더에 넣고 아래처럼 지정하는 것을 권장합니다.
-    // cover: "/images/wedding/cover.webp",
-    // gallery: ["/images/wedding/gallery-01.webp", ...],
-    cover: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85",
+    cover: weddingPhoto("cover-v1.webp"),
+    share: weddingPhoto("share-v1.webp"),
     gallery: [
-      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=82",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=82",
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=82",
-      "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=82",
-      "https://images.unsplash.com/photo-1496196614460-48988a57fccf?auto=format&fit=crop&w=900&q=82",
+      weddingPhoto("gallery-01-v1.webp"),
+      weddingPhoto("gallery-02-v1.webp"),
+      weddingPhoto("gallery-03-v1.webp"),
+      weddingPhoto("gallery-04-v1.webp"),
+      weddingPhoto("gallery-05-v1.webp"),
+      weddingPhoto("gallery-06-v1.webp"),
     ],
   },
   share: { title: "오승현 ♥ 이영미 결혼합니다", description: "2026년 12월 13일 일요일 오후 12시 30분" },

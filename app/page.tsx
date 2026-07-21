@@ -72,7 +72,9 @@ export default function Home() {
         content: {
           title: wedding.share.title,
           description: wedding.share.description,
-          imageUrl: wedding.photos.cover,
+          imageUrl: new URL(wedding.photos.share, window.location.origin).href,
+          imageWidth: 1200,
+          imageHeight: 1200,
           link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
         },
         buttons: [{
