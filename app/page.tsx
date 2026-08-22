@@ -210,15 +210,11 @@ export default function Home() {
           {Array.from({ length: 22 }, (_, index) => <i key={index} />)}
         </div>
         <div className="hero-stack">
-          <figure className="hero-frame">
-            <img src={wedding.photos.cover} alt="신랑 신부의 대표 웨딩 사진" />
-            <figcaption className="hero-label hero-label-left">SUN · 12:30 PM</figcaption>
-          </figure>
+          <span className="hero-label hero-label-left">SUN · 12:30 PM</span>
+          <figure className="hero-frame"><img src={wedding.photos.cover} alt="신랑 신부의 대표 웨딩 사진" /></figure>
           <h1 className="hero-names"><span>SEUNGHYEON &amp; YOUNGME</span></h1>
-          <figure className="hero-frame">
-            <img src={wedding.photos.gallery[0]} alt="신랑 신부의 웨딩 사진" />
-            <figcaption className="hero-label hero-label-left">DEC 13, 2026</figcaption>
-          </figure>
+          <span className="hero-label hero-label-left">DEC 13, 2026</span>
+          <figure className="hero-frame"><img src={wedding.photos.gallery[0]} alt="신랑 신부의 웨딩 사진" /></figure>
         </div>
         <div className="hero-copy">
           <p className="eyebrow">WE ARE GETTING MARRIED</p>
