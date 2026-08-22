@@ -8,14 +8,15 @@ declare global {
     Kakao?: {
       init: (key: string) => void;
       isInitialized: () => boolean;
-      Share: { sendDefault: (options: unknown) => void };
+      Share?: { sendDefault: (options: unknown) => void };
+      Link?: { sendDefault: (options: unknown) => void };
     };
   }
 }
 
 type KakaoSdk = NonNullable<Window["Kakao"]>;
 
-const KAKAO_SDK_SRC = "https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js";
+const KAKAO_SDK_SRC = "https://t1.kakaocdn.net/kakao_js_sdk/v1/kakao.js";
 let kakaoSdkPromise: Promise<KakaoSdk> | null = null;
 
 const loadKakaoSdk = () => {
@@ -28,7 +29,11 @@ const loadKakaoSdk = () => {
       else reject(new Error("Kakao SDK is not available."));
     };
     const fail = () => reject(new Error("Failed to load Kakao SDK."));
-    const existingScript = document.getElementById("kakao-sdk") as HTMLScriptElement | null;
+    let existingScript = document.getElementById("kakao-sdk") as HTMLScriptElement | null;
+    if (existingScript && existingScript.src !== KAKAO_SDK_SRC) {
+      existingScript.remove();
+      existingScript = null;
+    }
     const script = existingScript ?? document.createElement("script");
 
     script.addEventListener("load", finish, { once: true });
@@ -44,7 +49,7 @@ const loadKakaoSdk = () => {
     window.setTimeout(() => {
       if (window.Kakao) resolve(window.Kakao);
       else reject(new Error("Kakao SDK loading timed out."));
-    }, 8000);
+    }, 4000);
   }).catch((error) => {
     kakaoSdkPromise = null;
     throw error;
@@ -119,7 +124,7 @@ export default function Home() {
 
   const notify = (message: string) => {
     setToast(message);
-    window.setTimeout(() => setToast(""), 1800);
+    window.setTimeout(() => setToast(""), 2400);
   };
 
   const copy = async (text: string, label: string) => {
@@ -153,14 +158,18 @@ export default function Home() {
     }
 
     window.prompt(`${label}을 직접 복사해 주세요.`, text);
+    notify(`${label}을 직접 복사해 주세요`);
   };
 
   const share = async () => {
+    notify("공유를 준비하고 있어요");
     if (wedding.kakaoJavascriptKey) {
       try {
         const kakao = await loadKakaoSdk();
         if (!kakao.isInitialized()) kakao.init(wedding.kakaoJavascriptKey);
-        kakao.Share.sendDefault({
+        const shareApi = kakao.Share ?? kakao.Link;
+        if (!shareApi) throw new Error("Kakao share API is not available.");
+        shareApi.sendDefault({
           objectType: "feed",
           content: {
             title: wedding.share.title,
@@ -177,7 +186,8 @@ export default function Home() {
         });
         return;
       } catch {
-        notify("카카오 공유가 준비되지 않아 링크를 복사할게요");
+        await copy(window.location.href, "청첩장 주소");
+        return;
       }
     }
     const data = { title: wedding.share.title, text: wedding.share.description, url: window.location.href };
@@ -186,10 +196,11 @@ export default function Home() {
         await window.navigator.share(data);
         return;
       } catch {
+        await copy(window.location.href, "청첩장 주소");
         return;
       }
     }
-    else await copy(window.location.href, "청첩장 주소");
+    await copy(window.location.href, "청첩장 주소");
   };
 
   return (
