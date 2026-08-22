@@ -69,7 +69,7 @@ main { width:min(100%, 430px); margin:0 auto; overflow:hidden; background:var(--
 
 .section { padding:96px 32px; text-align:center; background:#fff; }
 .section:nth-of-type(even) { background:#fbfbfa; }
-.section-title h2 { margin:16px 0 0; font-family:var(--serif); font-size:30px; font-weight:400; color:#4f4f4f; white-space:nowrap; }
+.section-title h2 { margin:16px 0 0; font-family:var(--serif); font-size:clamp(28px, 7.4vw, 30px); font-weight:400; color:#4f4f4f; white-space:nowrap; }
 .section-title i { display:block; width:1px; height:46px; background:var(--faint); margin:30px auto 44px; }
 .message { white-space:pre-line; margin:0; font-size:14px; line-height:2.35; color:#686868; }
 .names { margin-top:50px; padding-top:30px; border-top:1px solid var(--faint); }
@@ -157,7 +157,7 @@ footer button { margin:auto; border:1px solid #d8d8d2; background:#fff; color:#5
 .lightbox img { max-width:100%; max-height:88vh; object-fit:contain; }
 .lightbox-close { position:absolute; top:20px; right:20px; background:#f1f1ef; border:0; color:#555; padding:8px; cursor:pointer; }
 .lightbox-close .icon { width:28px; height:28px; }
-.toast { position:fixed; z-index:1100; left:50%; bottom:25px; transform:translate(-50%,20px); padding:11px 18px; border-radius:30px; background:#333; color:white; font-size:11px; opacity:0; pointer-events:none; transition:.25s; white-space:nowrap; }
+.toast { position:fixed; z-index:1100; left:50%; bottom:calc(25px + env(safe-area-inset-bottom, 0px)); transform:translate(-50%,20px); padding:11px 18px; border-radius:30px; background:#333; color:white; font-size:11px; opacity:0; pointer-events:none; transition:.25s; white-space:nowrap; }
 .toast.visible { opacity:1; transform:translate(-50%,0); }
 
 @media (min-width:700px) {
@@ -167,7 +167,6 @@ footer button { margin:auto; border:1px solid #d8d8d2; background:#fff; color:#5
   .hero { padding-left:12px; padding-right:12px; }
   .hero-stack { grid-template-columns:22px minmax(0,1fr) 22px; column-gap:7px; }
   .section { padding-left:24px; padding-right:24px; }
-  .section-title h2 { font-size:28px; }
 }
 @media (prefers-reduced-motion:reduce) {
   * { scroll-behavior:auto!important; animation:none!important; transition:none!important; }
