@@ -8,11 +8,16 @@ export const wedding = {
   kakaoJavascriptKey: "af4bf52382ee539838bd5a5dcf901419",
   groom: {
     name: "오승현", parents: "김민수 · 박지영", phone: "01012345678",
-    bank: "하나은행", account: "123-456789-01234", accountHolder: "오승현",
+    accounts: [
+      { bank: "하나은행", account: "123-456789-01234", accountHolder: "오승현" },
+      { bank: "국민은행", account: "987654-32-109876", accountHolder: "오승현" },
+    ],
   },
   bride: {
     name: "이영미", parents: "이정호 · 최미경", phone: "01087654321",
-    bank: "국민은행", account: "012345-67-890123", accountHolder: "이서연",
+    accounts: [
+      { bank: "국민은행", account: "012345-67-890123", accountHolder: "이서연" },
+    ],
   },
   date: {
     iso: "2026-12-13T12:30:00+09:00",
@@ -23,11 +28,13 @@ export const wedding = {
   venue: {
     name: "JW웨딩컨벤션센터", hall: "5층 일루미아홀", address: "경남 김해시 김해대로 2520",
     mapUrl: "https://naver.me/FqWtu6oQ",
+    mapImage: weddingPhoto("location-map-v1.svg"),
   },
   transport: [
-    { title: "지하철", description: "2호선 역삼역 3번 출구에서 도보 5분" },
-    { title: "버스", description: "역삼역 정류장 하차, 도보 3분" },
-    { title: "주차", description: "건물 지하 주차장 2시간 무료 이용 가능" },
+    { title: "자차", description: "네비게이션 : 'JW웨딩컨벤션센터' 검색\n경남 김해시 김해대로 2520" },
+    { title: "경전철", description: "인제대역 하차 후 1번 출구 이용, 도보 1분 거리" },
+    { title: "버스", description: "인제대역 하차 · 2, 2-1, 4, 7, 8, 12, 123, 124, 127, 1004" },
+    { title: "주차", description: "건물 지하 주차장 이용 가능\n현장 주차 안내를 받아주세요." },
   ],
   photos: {
     cover: weddingPhoto("cover-v1.webp"),

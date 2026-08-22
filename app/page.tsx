@@ -28,14 +28,41 @@ function SectionTitle({ eyebrow, children }: { eyebrow: string; children: React.
   return <header className="section-title"><span>{eyebrow}</span><h2>{children}</h2><i /></header>;
 }
 
+const TransportIcon = ({ name }: { name: string }) => {
+  const icons: Record<string, React.ReactNode> = {
+    자차: <><path d="M6 12.5h12l-1-4A2 2 0 0 0 15 7H9a2 2 0 0 0-2 1.5l-1 4Z"/><path d="M5.5 12.5v5h13v-5"/><path d="M8.5 10h7"/><circle cx="8.5" cy="15.5" r="1.1"/><circle cx="15.5" cy="15.5" r="1.1"/><path d="M6.5 18.5v1M17.5 18.5v1"/></>,
+    경전철: <><rect x="6" y="4" width="12" height="13" rx="3"/><path d="M9 8h6M9 12h6M8 20l2-3M16 20l-2-3"/><circle cx="9" cy="15" r=".8"/><circle cx="15" cy="15" r=".8"/></>,
+    버스: <><rect x="5.5" y="4.5" width="13" height="13.5" rx="2.5"/><path d="M8.5 4.5V3h7v1.5M8.5 8.5h7M8.5 11.5h7M7.8 14.5h1.4M14.8 14.5h1.4"/><circle cx="8.5" cy="18" r="1"/><circle cx="15.5" cy="18" r="1"/><path d="M6.5 20h2M15.5 20h2"/></>,
+    주차: <><path d="M9 19V5h4.4a4.2 4.2 0 0 1 0 8.4H9"/><path d="M9 5h4.4"/></>,
+  };
+
+  return (
+    <span className="transport-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">{icons[name] ?? icons.자차}</svg>
+    </span>
+  );
+};
+
 export default function Home() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
   const [toast, setToast] = useState("");
   const firstWeekday = new Date(wedding.date.year, wedding.date.month - 1, 1).getDay();
   const lastDay = new Date(wedding.date.year, wedding.date.month, 0).getDate();
   const calendarDays = [...Array(firstWeekday).fill(""), ...Array.from({ length: lastDay }, (_, index) => index + 1)];
-  const remainingDays = Math.ceil((new Date(wedding.date.iso).getTime() - Date.now()) / 86_400_000);
-  const countdownLabel = remainingDays >= 0 ? `D-${remainingDays}` : `D+${Math.abs(remainingDays)}`;
+  const targetTime = new Date(wedding.date.iso).getTime();
+  const remainingMs = targetTime - Date.now();
+  const countdownMs = Math.max(0, remainingMs);
+  const countdown = [
+    { label: "DAYS", value: Math.floor(countdownMs / 86_400_000) },
+    { label: "HOURS", value: Math.floor((countdownMs % 86_400_000) / 3_600_000) },
+    { label: "MINUTES", value: Math.floor((countdownMs % 3_600_000) / 60_000) },
+    { label: "SECONDS", value: Math.floor((countdownMs % 60_000) / 1_000) },
+  ];
+  const remainingDays = countdown[0].value;
+  const englishMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const englishWeekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const weddingWeekdayIndex = new Date(wedding.date.year, wedding.date.month - 1, wedding.date.day).getDay();
+  const englishDate = `${englishWeekdays[weddingWeekdayIndex]}, ${englishMonths[wedding.date.month - 1]} ${wedding.date.day}, ${wedding.date.year} | PM 12:30`;
 
   useEffect(() => {
     if (selectedPhoto === null) return;
@@ -92,14 +119,23 @@ export default function Home() {
   return (
     <main>
       <section className="hero">
+        <div className="petal-layer" aria-hidden="true">
+          {Array.from({ length: 22 }, (_, index) => <i key={index} />)}
+        </div>
+        <div className="hero-stack">
+          <figure className="hero-frame">
+            <img src={wedding.photos.cover} alt="신랑 신부의 대표 웨딩 사진" />
+            <figcaption className="hero-label hero-label-left">SUN · 12:30 PM</figcaption>
+          </figure>
+          <h1 className="hero-names"><span>SEUNGHYEON &amp; YOUNGME</span></h1>
+          <figure className="hero-frame">
+            <img src={wedding.photos.gallery[0]} alt="신랑 신부의 웨딩 사진" />
+            <figcaption className="hero-label hero-label-left">DEC 13, 2026</figcaption>
+          </figure>
+        </div>
         <div className="hero-copy">
           <p className="eyebrow">WE ARE GETTING MARRIED</p>
-          <h1><span>{wedding.groom.name}</span><b>&amp;</b><span>{wedding.bride.name}</span></h1>
           <p className="hero-date">{wedding.date.display}</p>
-        </div>
-        <div className="hero-photo">
-          <img src={wedding.photos.cover} alt="신랑 신부의 대표 웨딩 사진" />
-          <div className="photo-note">Together, always.</div>
         </div>
         <p className="scroll-hint">SCROLL TO BEGIN <span>↓</span></p>
       </section>
@@ -108,19 +144,28 @@ export default function Home() {
         <SectionTitle eyebrow="INVITATION">소중한 분들을 초대합니다</SectionTitle>
         <p className="message">{wedding.message}</p>
         <div className="names">
-          <p>{wedding.groom.parents} <small>의 아들</small> <strong>{wedding.groom.name}</strong></p>
-          <p>{wedding.bride.parents} <small>의 딸</small> <strong>{wedding.bride.name}</strong></p>
+          <p><span className="parent-names">{wedding.groom.parents}</span><small>의 아들</small><strong>{wedding.groom.name}</strong></p>
+          <p><span className="parent-names">{wedding.bride.parents}</span><small>의 딸</small><strong>{wedding.bride.name}</strong></p>
         </div>
       </section>
 
       <section className="calendar-section section">
-        <SectionTitle eyebrow="THE WEDDING DAY">{wedding.date.year}. {wedding.date.month}. {wedding.date.day}</SectionTitle>
-        <p className="time-place">{wedding.date.weekday} {wedding.date.time}<br />{wedding.venue.name} {wedding.venue.hall}</p>
+        <h2 className="wedding-day-title">WEDDING DAY</h2>
+        <p className="date-korean">{wedding.date.year}년 {wedding.date.month}월 {wedding.date.day}일 {wedding.date.weekday} | {wedding.date.time}</p>
+        <p className="date-english">{englishDate}</p>
         <div className="calendar" aria-label={`${wedding.date.month}월 달력`}>
-          {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((day) => <span className="weekday" key={day}>{day}</span>)}
+          {["일", "월", "화", "수", "목", "금", "토"].map((day) => <span className="weekday" key={day}>{day}</span>)}
           {calendarDays.map((day, index) => <span key={`${day}-${index}`} className={day === wedding.date.day ? "wedding-day" : ""}>{day || ""}</span>)}
         </div>
-        <p className="d-day">우리의 결혼식까지 <strong>{countdownLabel}</strong></p>
+        <div className="countdown-grid" aria-label="결혼식까지 남은 시간">
+          {countdown.map((item) => (
+            <div className="countdown-card" key={item.label}>
+              <strong>{String(item.value).padStart(2, "0")}</strong>
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+        <p className="countdown-message">승현 <span className="heart-red">♥</span> 영미 결혼식이 {remainingDays}일 남았습니다</p>
       </section>
 
       <section className="gallery section">
@@ -136,15 +181,29 @@ export default function Home() {
 
       <section className="location section">
         <SectionTitle eyebrow="LOCATION">오시는 길</SectionTitle>
-        <h3>{wedding.venue.name}</h3>
-        <p>{wedding.venue.hall}<br />{wedding.venue.address}</p>
-        <div className="map-card">
-          <div className="map-pin"><Icon name="map" /></div>
-          <p>{wedding.venue.name}<small>{wedding.venue.address}</small></p>
+        <div className="naver-map-card">
+          <a href={wedding.venue.mapUrl} target="_blank" rel="noreferrer" aria-label="네이버 지도에서 예식장 위치 보기">
+            <span className="naver-logo">NAVER</span>
+            <span className="map-road map-road-main" />
+            <span className="map-road map-road-sub" />
+            <span className="map-station">인제대역</span>
+            <span className="map-marker"><Icon name="map" /></span>
+            <strong>{wedding.venue.name}</strong>
+            <small>{wedding.venue.address}</small>
+          </a>
         </div>
-        <a className="primary-button" href={wedding.venue.mapUrl} target="_blank" rel="noreferrer"><Icon name="map" />지도에서 길 찾기</a>
-        <div className="transport">
-          {wedding.transport.map((item) => <article key={item.title}><h4>{item.title}</h4><p>{item.description}</p></article>)}
+        <div className="location-place">
+          <h3>{wedding.venue.name} <span>{wedding.venue.hall}</span></h3>
+          <p>{wedding.venue.address}</p>
+        </div>
+        <a className="primary-button naver-button" href={wedding.venue.mapUrl} target="_blank" rel="noreferrer"><Icon name="map" />네이버 지도 열기</a>
+        <div className="transport location-routes">
+          {wedding.transport.map((item) => (
+            <article key={item.title}>
+              <h4><TransportIcon name={item.title} />{item.title}</h4>
+              <p>{item.description}</p>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -152,11 +211,15 @@ export default function Home() {
         <SectionTitle eyebrow="CONTACT">마음을 전하는 곳</SectionTitle>
         <p className="contact-description">참석이 어려워 직접 축하를 전하지 못하는<br />분들을 위해 계좌번호를 안내드립니다.</p>
         {[wedding.groom, wedding.bride].map((person, index) => (
-          <details key={person.name} className="account" open={index === 0}>
-            <summary>{index === 0 ? "신랑" : "신부"}측 계좌번호 <span>⌄</span></summary>
+          <details key={person.name} className="account">
+            <summary>{index === 0 ? "신랑" : "신부"}측 계좌번호 보기 <span>⌄</span></summary>
             <div className="account-body">
-              <div><p>{person.bank} {person.account}</p><small>예금주 {person.accountHolder}</small></div>
-              <button onClick={() => copy(person.account, "계좌번호")} aria-label={`${person.name} 계좌번호 복사`}><Icon name="copy" />복사</button>
+              {person.accounts.map((account) => (
+                <div className="account-item" key={`${account.bank}-${account.account}`}>
+                  <div><p>{account.bank} {account.account}</p><small>예금주 {account.accountHolder}</small></div>
+                  <button onClick={() => copy(account.account, "계좌번호")} aria-label={`${account.accountHolder} 계좌번호 복사`}><Icon name="copy" />복사</button>
+                </div>
+              ))}
             </div>
           </details>
         ))}
@@ -167,8 +230,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <p className="footer-names">{wedding.groom.name} <span>&amp;</span> {wedding.bride.name}</p>
-        <p>저희의 새로운 시작을 함께 축복해 주세요.</p>
+        <p className="footer-message">저희의 새로운 시작을 함께 축복해 주세요.</p>
         <button onClick={share}><Icon name="share" />청첩장 공유하기</button>
       </footer>
 
