@@ -13,6 +13,46 @@ declare global {
   }
 }
 
+type KakaoSdk = NonNullable<Window["Kakao"]>;
+
+const KAKAO_SDK_SRC = "https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js";
+let kakaoSdkPromise: Promise<KakaoSdk> | null = null;
+
+const loadKakaoSdk = () => {
+  if (window.Kakao) return Promise.resolve(window.Kakao);
+  if (kakaoSdkPromise) return kakaoSdkPromise;
+
+  kakaoSdkPromise = new Promise<KakaoSdk>((resolve, reject) => {
+    const finish = () => {
+      if (window.Kakao) resolve(window.Kakao);
+      else reject(new Error("Kakao SDK is not available."));
+    };
+    const fail = () => reject(new Error("Failed to load Kakao SDK."));
+    const existingScript = document.getElementById("kakao-sdk") as HTMLScriptElement | null;
+    const script = existingScript ?? document.createElement("script");
+
+    script.addEventListener("load", finish, { once: true });
+    script.addEventListener("error", fail, { once: true });
+
+    if (!existingScript) {
+      script.id = "kakao-sdk";
+      script.src = KAKAO_SDK_SRC;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+
+    window.setTimeout(() => {
+      if (window.Kakao) resolve(window.Kakao);
+      else reject(new Error("Kakao SDK loading timed out."));
+    }, 8000);
+  }).catch((error) => {
+    kakaoSdkPromise = null;
+    throw error;
+  });
+
+  return kakaoSdkPromise;
+};
+
 const Icon = ({ name }: { name: "copy" | "phone" | "map" | "share" | "close" }) => {
   const paths = {
     copy: <><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></>,
@@ -73,12 +113,8 @@ export default function Home() {
   }, [selectedPhoto]);
 
   useEffect(() => {
-    if (!wedding.kakaoJavascriptKey || document.getElementById("kakao-sdk")) return;
-    const script = document.createElement("script");
-    script.id = "kakao-sdk";
-    script.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js";
-    script.crossOrigin = "anonymous";
-    document.head.appendChild(script);
+    if (!wedding.kakaoJavascriptKey) return;
+    void loadKakaoSdk().catch(() => undefined);
   }, []);
 
   const notify = (message: string) => {
@@ -87,32 +123,72 @@ export default function Home() {
   };
 
   const copy = async (text: string, label: string) => {
-    await navigator.clipboard.writeText(text);
-    notify(`${label}을 복사했어요`);
+    try {
+      if (window.navigator.clipboard?.writeText) {
+        await window.navigator.clipboard.writeText(text);
+        notify(`${label}을 복사했어요`);
+        return;
+      }
+    } catch {
+      // 아래의 수동 복사 방식으로 이어집니다.
+    }
+
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      if (document.execCommand("copy")) {
+        notify(`${label}을 복사했어요`);
+        return;
+      }
+    } catch {
+      // 직접 복사 안내로 이어집니다.
+    } finally {
+      document.body.removeChild(textarea);
+    }
+
+    window.prompt(`${label}을 직접 복사해 주세요.`, text);
   };
 
   const share = async () => {
-    if (wedding.kakaoJavascriptKey && window.Kakao) {
-      if (!window.Kakao.isInitialized()) window.Kakao.init(wedding.kakaoJavascriptKey);
-      window.Kakao.Share.sendDefault({
-        objectType: "feed",
-        content: {
-          title: wedding.share.title,
-          description: wedding.share.description,
-          imageUrl: new URL(wedding.photos.share, window.location.origin).href,
-          imageWidth: 1200,
-          imageHeight: 1200,
-          link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
-        },
-        buttons: [{
-          title: "모바일 청첩장 보기",
-          link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
-        }],
-      });
-      return;
+    if (wedding.kakaoJavascriptKey) {
+      try {
+        const kakao = await loadKakaoSdk();
+        if (!kakao.isInitialized()) kakao.init(wedding.kakaoJavascriptKey);
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: wedding.share.title,
+            description: wedding.share.description,
+            imageUrl: new URL(wedding.photos.share, window.location.origin).href,
+            imageWidth: 1200,
+            imageHeight: 1200,
+            link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
+          },
+          buttons: [{
+            title: "모바일 청첩장 보기",
+            link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
+          }],
+        });
+        return;
+      } catch {
+        notify("카카오 공유가 준비되지 않아 링크를 복사할게요");
+      }
     }
     const data = { title: wedding.share.title, text: wedding.share.description, url: window.location.href };
-    if (navigator.share) await navigator.share(data);
+    if (window.navigator.share) {
+      try {
+        await window.navigator.share(data);
+        return;
+      } catch {
+        return;
+      }
+    }
     else await copy(window.location.href, "청첩장 주소");
   };
 
