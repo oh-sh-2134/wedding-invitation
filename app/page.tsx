@@ -91,11 +91,12 @@ const TransportIcon = ({ name }: { name: string }) => {
 export default function Home() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
   const [toast, setToast] = useState("");
+  const [now, setNow] = useState(() => Date.now());
   const firstWeekday = new Date(wedding.date.year, wedding.date.month - 1, 1).getDay();
   const lastDay = new Date(wedding.date.year, wedding.date.month, 0).getDate();
   const calendarDays = [...Array(firstWeekday).fill(""), ...Array.from({ length: lastDay }, (_, index) => index + 1)];
   const targetTime = new Date(wedding.date.iso).getTime();
-  const remainingMs = targetTime - Date.now();
+  const remainingMs = targetTime - now;
   const countdownMs = Math.max(0, remainingMs);
   const countdown = [
     { label: "DAYS", value: Math.floor(countdownMs / 86_400_000) },
@@ -108,6 +109,11 @@ export default function Home() {
   const englishWeekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const weddingWeekdayIndex = new Date(wedding.date.year, wedding.date.month - 1, wedding.date.day).getDay();
   const englishDate = `${englishWeekdays[weddingWeekdayIndex]}, ${englishMonths[wedding.date.month - 1]} ${wedding.date.day}, ${wedding.date.year} | PM 12:30`;
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     if (selectedPhoto === null) return;
