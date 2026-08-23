@@ -148,6 +148,7 @@ const timeline = [
 
 export default function Home() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
+  const [showOpening, setShowOpening] = useState(true);
   const [toast, setToast] = useState("");
   const [now, setNow] = useState(() => Date.now());
   const firstWeekday = new Date(wedding.date.year, wedding.date.month - 1, 1).getDay();
@@ -167,6 +168,11 @@ export default function Home() {
   const englishWeekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const weddingWeekdayIndex = new Date(wedding.date.year, wedding.date.month - 1, wedding.date.day).getDay();
   const englishDate = `${englishWeekdays[weddingWeekdayIndex]}, ${englishMonths[wedding.date.month - 1]} ${wedding.date.day}, ${wedding.date.year} | PM 12:30`;
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setShowOpening(false), 5600);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
@@ -269,6 +275,44 @@ export default function Home() {
 
   return (
     <main>
+      {showOpening && (
+        <button className="opening" onClick={() => setShowOpening(false)} aria-label="인트로 애니메이션 건너뛰기">
+          <span className="opening-petals" aria-hidden="true">
+            {Array.from({ length: 12 }, (_, index) => <i key={index} />)}
+          </span>
+          <svg className="opening-script" viewBox="0 0 430 230" role="img" aria-label="Celebrate with us">
+            <defs>
+              <mask id="opening-write-mask-1" maskUnits="userSpaceOnUse">
+                <path className="opening-mask-path opening-mask-path-1a" d="M113 98 C84 123, 61 94, 87 70 C111 48, 145 62, 130 91 C118 114, 92 113, 88 95" />
+                <path className="opening-mask-path opening-mask-path-1b" d="M126 101 C143 80, 163 80, 164 98 C165 116, 136 119, 141 99 C146 79, 180 78, 180 101" />
+                <path className="opening-mask-path opening-mask-path-1c" d="M178 102 C196 80, 216 83, 215 101 C214 118, 190 119, 194 99 C201 69, 240 75, 236 105" />
+                <path className="opening-mask-path opening-mask-path-1d" d="M231 102 C250 82, 272 84, 272 102 C272 118, 245 119, 251 99 C257 79, 292 81, 293 103" />
+                <path className="opening-mask-path opening-mask-path-1e" d="M291 102 C309 80, 331 84, 330 103 C329 120, 304 119, 309 99 C317 70, 361 72, 375 94" />
+              </mask>
+              <mask id="opening-write-mask-2" maskUnits="userSpaceOnUse">
+                <path className="opening-mask-path opening-mask-path-2a" d="M112 160 C127 143, 142 143, 139 162 C136 180, 113 176, 121 154" />
+                <path className="opening-mask-path opening-mask-path-2b" d="M138 162 C154 140, 176 141, 174 163 C172 180, 150 178, 156 154 C164 128, 194 137, 193 162" />
+                <path className="opening-mask-path opening-mask-path-2c" d="M190 162 C211 142, 232 145, 231 164 C230 181, 202 178, 208 154" />
+                <path className="opening-mask-path opening-mask-path-2d" d="M229 164 C245 142, 271 142, 267 164 C264 181, 238 178, 246 154 C255 129, 294 139, 292 162" />
+                <path className="opening-mask-path opening-mask-path-2e" d="M290 163 C306 145, 326 146, 324 164 C322 180, 301 177, 309 157" />
+              </mask>
+            </defs>
+            <path className="opening-pen-path opening-pen-path-1a" d="M113 98 C84 123, 61 94, 87 70 C111 48, 145 62, 130 91 C118 114, 92 113, 88 95" />
+            <path className="opening-pen-path opening-pen-path-1b" d="M126 101 C143 80, 163 80, 164 98 C165 116, 136 119, 141 99 C146 79, 180 78, 180 101" />
+            <path className="opening-pen-path opening-pen-path-1c" d="M178 102 C196 80, 216 83, 215 101 C214 118, 190 119, 194 99 C201 69, 240 75, 236 105" />
+            <path className="opening-pen-path opening-pen-path-1d" d="M231 102 C250 82, 272 84, 272 102 C272 118, 245 119, 251 99 C257 79, 292 81, 293 103" />
+            <path className="opening-pen-path opening-pen-path-1e" d="M291 102 C309 80, 331 84, 330 103 C329 120, 304 119, 309 99 C317 70, 361 72, 375 94" />
+            <path className="opening-pen-path opening-pen-path-2a" d="M112 160 C127 143, 142 143, 139 162 C136 180, 113 176, 121 154" />
+            <path className="opening-pen-path opening-pen-path-2b" d="M138 162 C154 140, 176 141, 174 163 C172 180, 150 178, 156 154 C164 128, 194 137, 193 162" />
+            <path className="opening-pen-path opening-pen-path-2c" d="M190 162 C211 142, 232 145, 231 164 C230 181, 202 178, 208 154" />
+            <path className="opening-pen-path opening-pen-path-2d" d="M229 164 C245 142, 271 142, 267 164 C264 181, 238 178, 246 154 C255 129, 294 139, 292 162" />
+            <path className="opening-pen-path opening-pen-path-2e" d="M290 163 C306 145, 326 146, 324 164 C322 180, 301 177, 309 157" />
+            <text className="opening-script-word opening-script-word-1" x="215" y="99" textAnchor="middle" mask="url(#opening-write-mask-1)">Celebrate</text>
+            <text className="opening-script-word opening-script-word-2" x="215" y="164" textAnchor="middle" mask="url(#opening-write-mask-2)">with us</text>
+          </svg>
+        </button>
+      )}
+
       <section className="hero">
         <div className="petal-layer" aria-hidden="true">
           {Array.from({ length: 22 }, (_, index) => <i key={index} />)}
