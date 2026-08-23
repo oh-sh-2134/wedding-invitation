@@ -93,7 +93,7 @@ const TransportIcon = ({ name }: { name: string }) => {
 const aboutUs = [
   {
     role: "신랑",
-    name: "오승현",
+    name: "승현",
     headline: "오직 신부와만 통하는 완벽한 네트워크 공대생",
     born: "1996년 4월 김해 출생",
     description: "묵묵하고 깊은 생각으로\n우리의 미래를 치밀하게 준비하는 INTJ",
@@ -101,7 +101,7 @@ const aboutUs = [
   },
   {
     role: "신부",
-    name: "이영미",
+    name: "영미",
     headline: "신랑과 역사를 아름답게 기록할 인문대생",
     born: "1996년 10월 상주 출생",
     description: "명확한 비전과 따뜻한 감성으로\n우리의 삶을 완성하는 ENTJ",

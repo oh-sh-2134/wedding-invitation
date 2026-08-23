@@ -7,16 +7,17 @@ export const wedding = {
   // 예: kakaoJavascriptKey: "1234567890abcdef1234567890abcdef"
   kakaoJavascriptKey: "af4bf52382ee539838bd5a5dcf901419",
   groom: {
-    name: "오승현", parents: "오상석 · 강점진", phone: "01012345678",
+    name: "승현", parents: "오상석 · 강점진", phone: "01012345678",
     accounts: [
       { bank: "하나은행", account: "123-456789-01234", accountHolder: "오승현" },
       { bank: "국민은행", account: "987654-32-109876", accountHolder: "오승현" },
     ],
   },
   bride: {
-    name: "이영미", parents: "박희성 · 이서린", phone: "01087654321",
+    name: "영미", parents: "박희성 · 이서린", phone: "01087654321",
     accounts: [
-      { bank: "국민은행", account: "012345-67-890123", accountHolder: "이서연" },
+      { bank: "농협", account: "779 01 287871", accountHolder: "이서린" },
+      { bank: "농협", account: "3020938511701", accountHolder: "이영미" },
     ],
   },
   date: {
@@ -48,5 +49,5 @@ export const wedding = {
       weddingPhoto("gallery-06-v1.webp"),
     ],
   },
-  share: { title: "오승현 ♥ 이영미 결혼합니다", description: "2026년 12월 13일 일요일 오후 12시 30분" },
+  share: { title: "승현 ♥ 영미 결혼합니다", description: "2026년 12월 13일 일요일 오후 12시 30분" },
 } as const;
