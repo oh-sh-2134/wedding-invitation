@@ -7,14 +7,14 @@ export const wedding = {
   // 예: kakaoJavascriptKey: "1234567890abcdef1234567890abcdef"
   kakaoJavascriptKey: "af4bf52382ee539838bd5a5dcf901419",
   groom: {
-    name: "오승현", parents: "김민수 · 박지영", phone: "01012345678",
+    name: "오승현", parents: "오상석 · 강점진", phone: "01012345678",
     accounts: [
       { bank: "하나은행", account: "123-456789-01234", accountHolder: "오승현" },
       { bank: "국민은행", account: "987654-32-109876", accountHolder: "오승현" },
     ],
   },
   bride: {
-    name: "이영미", parents: "이정호 · 최미경", phone: "01087654321",
+    name: "이영미", parents: "박희성 · 이서린", phone: "01087654321",
     accounts: [
       { bank: "국민은행", account: "012345-67-890123", accountHolder: "이서연" },
     ],

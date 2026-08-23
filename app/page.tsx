@@ -18,6 +18,8 @@ type KakaoSdk = NonNullable<Window["Kakao"]>;
 
 const KAKAO_SDK_SRC = "https://t1.kakaocdn.net/kakao_js_sdk/v1/kakao.js";
 let kakaoSdkPromise: Promise<KakaoSdk> | null = null;
+const timelinePhoto = (fileName: string) =>
+  `${import.meta.env.BASE_URL}images/wedding/${fileName}`;
 
 const loadKakaoSdk = () => {
   if (window.Kakao) return Promise.resolve(window.Kakao);
@@ -69,8 +71,8 @@ const Icon = ({ name }: { name: "copy" | "phone" | "map" | "share" | "close" }) 
   return <svg className="icon" viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
 };
 
-function SectionTitle({ eyebrow, children }: { eyebrow: string; children: React.ReactNode }) {
-  return <header className="section-title"><span>{eyebrow}</span><h2>{children}</h2><i /></header>;
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return <header className="section-title"><h2>{children}</h2><i /></header>;
 }
 
 const TransportIcon = ({ name }: { name: string }) => {
@@ -87,6 +89,62 @@ const TransportIcon = ({ name }: { name: string }) => {
     </span>
   );
 };
+
+const aboutUs = [
+  {
+    role: "신랑",
+    name: "오승현",
+    headline: "오직 신부와만 통하는 완벽한 네트워크 공대생",
+    born: "1996년 4월 김해 출생",
+    description: "묵묵하고 깊은 생각으로 우리의 미래를 치밀하게 준비하는 INTJ",
+    imageIndex: 0,
+  },
+  {
+    role: "신부",
+    name: "이영미",
+    headline: "신랑과 역사를 아름답게 기록할 인문대생",
+    born: "1996년 10월 상주 출생",
+    description: "명확한 비전과 따뜻한 감성으로 우리의 삶을 완성하는 ENTJ",
+    imageIndex: 1,
+  },
+];
+
+const timeline = [
+  {
+    tag: "17년 6월 15일, 경주",
+    title: "🍻 첫 만남",
+    description: "도서관 다녀온 뒤 술 한잔 기울이던\n가장 친한 캠퍼스 술 베프에서 연인으로",
+    photo: timelinePhoto("timeline-01-v1.webp"),
+    imageIndex: 0,
+  },
+  {
+    tag: "18년 9월 17일",
+    title: "🌸 꽃신 신은 날",
+    description: "서로를 향한 믿음과 기다림 끝에\n더욱 단단하고 예쁜 사랑을 약속한 날",
+    photo: timelinePhoto("timeline-02-v1.webp"),
+    imageIndex: 1,
+  },
+  {
+    tag: "19년~20년",
+    title: "💼 각자의 자리에서 사회인으로서의 첫걸음",
+    description: "학생 시절을 지나 서로의 분야에서 자리 잡기까지\n곁에서 가장 뜨겁게 응원해 준 든든한 페이스메이커",
+    photo: timelinePhoto("timeline-03-v1.webp"),
+    imageIndex: 2,
+  },
+  {
+    tag: "3,469일의 시간",
+    title: "🤍 함께해 온 날들",
+    description: "함께 울고 웃으며 쌓아온 9년,\n서로에게 가장 든든한 존재가 되어준 시간",
+    photo: timelinePhoto("timeline-04-v1.webp"),
+    imageIndex: 3,
+  },
+  {
+    tag: "26년 12월 13일, 김해",
+    title: "👰🤵 웨딩데이",
+    description: "오랜 시간을 깊게 함께했기에\n더 큰 확신으로 같은 미래를 향해 걸어가는 날",
+    imageIndex: 4,
+  },
+];
 
 export default function Home() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
@@ -218,7 +276,7 @@ export default function Home() {
         <div className="hero-stack">
           <span className="hero-label-slot"><span className="hero-label hero-label-left">SUN · 12:30 PM</span></span>
           <figure className="hero-frame"><img src={wedding.photos.cover} alt="신랑 신부의 대표 웨딩 사진" /></figure>
-          <h1 className="hero-names"><span>SEUNGHYEON &amp; YOUNGME</span></h1>
+          <h1 className="hero-names"><span>SEUNGHYEON &amp; YOUNGMI</span></h1>
           <span className="hero-label-slot"><span className="hero-label hero-label-left">DEC 13, 2026</span></span>
           <figure className="hero-frame"><img src={wedding.photos.gallery[0]} alt="신랑 신부의 웨딩 사진" /></figure>
         </div>
@@ -230,7 +288,7 @@ export default function Home() {
       </section>
 
       <section className="intro section">
-        <SectionTitle eyebrow="INVITATION">소중한 분들을 초대합니다</SectionTitle>
+        <SectionTitle>초대합니다</SectionTitle>
         <p className="message">{wedding.message}</p>
         <div className="names">
           <p><span className="parent-names">{wedding.groom.parents}</span><small>의 아들</small><strong>{wedding.groom.name}</strong></p>
@@ -239,7 +297,7 @@ export default function Home() {
       </section>
 
       <section className="calendar-section section">
-        <h2 className="wedding-day-title">WEDDING DAY</h2>
+        <h2 className="wedding-day-title">예식일 안내</h2>
         <p className="date-korean">{wedding.date.year}년 {wedding.date.month}월 {wedding.date.day}일 {wedding.date.weekday} | {wedding.date.time}</p>
         <p className="date-english">{englishDate}</p>
         <div className="calendar" aria-label={`${wedding.date.month}월 달력`}>
@@ -257,8 +315,49 @@ export default function Home() {
         <p className="countdown-message">승현 <span className="heart-red">♥</span> 영미 결혼식이 {remainingDays}일 남았습니다</p>
       </section>
 
+      <section className="about-us section">
+        <h2 className="story-title">우리를 소개합니다</h2>
+        <p className="story-subtitle">저희 커플을 소개합니다</p>
+        <p className="story-lead">서로 다른 두 세계가 만나<br />하나의 미래를 그려갑니다</p>
+        <div className="about-cards">
+          {aboutUs.map((person) => (
+            <article className="about-card" key={person.role}>
+              <div className="about-photo">
+                <img src={wedding.photos.gallery[person.imageIndex]} alt={`${person.role} ${person.name} 소개 사진`} loading="lazy" />
+              </div>
+              <p className="about-headline">{person.headline}</p>
+              <h3><span>{person.role}</span>{person.name}</h3>
+              <p className="about-born">{person.born}</p>
+              <p className="about-description">{person.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="timeline-section section">
+        <h2 className="story-title">우리의 시간</h2>
+        <p className="story-subtitle">저희 연애의 타임라인입니다</p>
+        <p className="story-lead">서로에게 참 소중하고<br />감사한 존재가 되어준 시간</p>
+        <div className="timeline-list">
+          {timeline.map((item, index) => (
+            <article className={`timeline-item ${index % 2 === 1 ? "is-reverse" : ""}`} key={item.tag}>
+              <div className="timeline-photo">
+                <img src={item.photo ?? wedding.photos.gallery[item.imageIndex % wedding.photos.gallery.length]} alt={`${item.title} 사진`} loading="lazy" />
+              </div>
+              <span className="timeline-dot" aria-hidden="true" />
+              <div className="timeline-copy">
+                <span className="timeline-tag">{item.tag}</span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+              <span className="timeline-number">{String(index + 1).padStart(2, "0")}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="gallery section">
-        <SectionTitle eyebrow="GALLERY">우리의 순간들</SectionTitle>
+        <SectionTitle>우리의 순간들</SectionTitle>
         <div className="photo-grid">
           {wedding.photos.gallery.map((photo, index) => (
             <button key={photo} className={index === 0 ? "featured" : ""} onClick={() => setSelectedPhoto(index)} aria-label={`웨딩 사진 ${index + 1} 크게 보기`}>
@@ -269,7 +368,7 @@ export default function Home() {
       </section>
 
       <section className="location section">
-        <SectionTitle eyebrow="LOCATION">오시는 길</SectionTitle>
+        <SectionTitle>오시는 길</SectionTitle>
         <div className="naver-map-card">
           <a href={wedding.venue.mapUrl} target="_blank" rel="noreferrer" aria-label="네이버 지도에서 예식장 위치 보기">
             <span className="naver-logo">NAVER</span>
@@ -297,7 +396,7 @@ export default function Home() {
       </section>
 
       <section className="contact section">
-        <SectionTitle eyebrow="CONTACT">마음을 전하는 곳</SectionTitle>
+        <SectionTitle>마음 전하실 곳</SectionTitle>
         <p className="contact-description">참석이 어려워 직접 축하를 전하지 못하는<br />분들을 위해 계좌번호를 안내드립니다.</p>
         {[wedding.groom, wedding.bride].map((person, index) => (
           <details key={person.name} className="account">
