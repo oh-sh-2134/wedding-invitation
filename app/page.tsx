@@ -94,18 +94,18 @@ const aboutUs = [
   {
     role: "신랑",
     name: "승현",
-    headline: "오직 신부와만 통하는 완벽한 네트워크 공대생",
+    headline: "오직 신부만을 연구하는 공대생",
     born: "1996년 4월 김해 출생",
     description: "묵묵하고 깊은 생각으로\n우리의 미래를 치밀하게 준비하는 INTJ",
-    imageIndex: 0,
+    photo: wedding.photos.about.groom,
   },
   {
     role: "신부",
     name: "영미",
-    headline: "신랑과 역사를 아름답게 기록할 인문대생",
+    headline: "신랑과 역사를 기록할 인문대생",
     born: "1996년 10월 상주 출생",
     description: "명확한 비전과 따뜻한 감성으로\n우리의 삶을 완성하는 ENTJ",
-    imageIndex: 1,
+    photo: wedding.photos.about.bride,
   },
 ];
 
@@ -145,6 +145,8 @@ const timeline = [
     imageIndex: 4,
   },
 ];
+
+const galleryPhotos = wedding.photos.moments;
 
 export default function Home() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
@@ -323,12 +325,14 @@ export default function Home() {
           {aboutUs.map((person) => (
             <article className="about-card" key={person.role}>
               <div className="about-photo">
-                <img src={wedding.photos.gallery[person.imageIndex]} alt={`${person.role} ${person.name} 소개 사진`} loading="lazy" />
+                <img src={person.photo} alt={`${person.role} ${person.name} 소개 사진`} loading="lazy" />
               </div>
-              <p className="about-headline">{person.headline}</p>
-              <h3><span>{person.role}</span>{person.name}</h3>
-              <p className="about-born">{person.born}</p>
-              <p className="about-description">{person.description}</p>
+              <div className="about-copy">
+                <p className="about-headline">{person.headline}</p>
+                <h3><span>{person.role}</span>{person.name}</h3>
+                <p className="about-born">{person.born}</p>
+                <p className="about-description">{person.description}</p>
+              </div>
             </article>
           ))}
         </div>
@@ -357,10 +361,10 @@ export default function Home() {
       </section>
 
       <section className="gallery section">
-        <SectionTitle>우리의 순간들</SectionTitle>
+        <SectionTitle>우리들의 순간들</SectionTitle>
         <div className="photo-grid">
-          {wedding.photos.gallery.map((photo, index) => (
-            <button key={photo} className={index === 0 ? "featured" : ""} onClick={() => setSelectedPhoto(index)} aria-label={`웨딩 사진 ${index + 1} 크게 보기`}>
+          {galleryPhotos.map((photo, index) => (
+            <button key={`${photo}-${index}`} onClick={() => setSelectedPhoto(index)} aria-label={`웨딩 사진 ${index + 1} 크게 보기`}>
               <img src={photo} alt={`웨딩 사진 ${index + 1}`} loading={index > 1 ? "lazy" : "eager"} />
             </button>
           ))}
@@ -425,7 +429,7 @@ export default function Home() {
       {selectedPhoto !== null && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="웨딩 사진 크게 보기" onClick={() => setSelectedPhoto(null)}>
           <button className="lightbox-close" aria-label="사진 닫기" onClick={() => setSelectedPhoto(null)}><Icon name="close" /></button>
-          <img src={wedding.photos.gallery[selectedPhoto]} alt={`웨딩 사진 ${selectedPhoto + 1} 크게 보기`} onClick={(e) => e.stopPropagation()} />
+          <img src={galleryPhotos[selectedPhoto]} alt={`웨딩 사진 ${selectedPhoto + 1} 크게 보기`} onClick={(e) => e.stopPropagation()} />
         </div>
       )}
       <div className={`toast ${toast ? "visible" : ""}`} role="status">{toast}</div>

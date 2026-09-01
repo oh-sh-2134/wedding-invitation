@@ -7,17 +7,18 @@ export const wedding = {
   // 예: kakaoJavascriptKey: "1234567890abcdef1234567890abcdef"
   kakaoJavascriptKey: "af4bf52382ee539838bd5a5dcf901419",
   groom: {
-    name: "승현", parents: "오상석 · 강점진", phone: "01012345678",
+    name: "승현", parents: "오상석 · 강점진", phone: "01066442136",
     accounts: [
-      { bank: "하나은행", account: "123-456789-01234", accountHolder: "오승현" },
-      { bank: "국민은행", account: "987654-32-109876", accountHolder: "오승현" },
+      { bank: "농협", account: "178194-56-026009", accountHolder: "오상석" },
+      { bank: "부산은행", account: "117- 12- 038452 -8", accountHolder: "강점진" },
+      { bank: "카카오뱅크", account: "3333-06-3570386", accountHolder: "오승현" },
     ],
   },
   bride: {
-    name: "영미", parents: "박희성 · 이서린", phone: "01087654321",
+    name: "영미", parents: "박희성 · 이서린", phone: "01082969961",
     accounts: [
       { bank: "농협", account: "779 01 287871", accountHolder: "이서린" },
-      { bank: "농협", account: "3020938511701", accountHolder: "이영미" },
+      { bank: "농협", account: "302-0938-5117-01", accountHolder: "이영미" },
     ],
   },
   date: {
@@ -47,6 +48,22 @@ export const wedding = {
       weddingPhoto("gallery-04-v1.webp"),
       weddingPhoto("gallery-05-v1.webp"),
       weddingPhoto("gallery-06-v1.webp"),
+    ],
+    about: {
+      groom: weddingPhoto("about-groom-childhood-v1.webp"),
+      bride: weddingPhoto("about-bride-childhood-v1.webp"),
+    },
+    moments: [
+      weddingPhoto("moments-05-v1.webp"),
+      weddingPhoto("moments-04-v1.webp"),
+      weddingPhoto("moments-02-v1.webp"),
+      weddingPhoto("moments-03-v1.webp"),
+      weddingPhoto("moments-01-v1.webp"),
+      weddingPhoto("moments-07-v1.webp"),
+      weddingPhoto("moments-08-v1.webp"),
+      weddingPhoto("moments-09-v1.webp"),
+      weddingPhoto("moments-11-v1.webp"),
+      weddingPhoto("moments-06-v1.webp"),
     ],
   },
   share: { title: "승현 ♥ 영미 결혼합니다", description: "2026년 12월 13일 일요일 오후 12시 30분" },
