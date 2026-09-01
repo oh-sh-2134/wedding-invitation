@@ -17,7 +17,7 @@ export const wedding = {
   bride: {
     name: "영미", parents: "박희성 · 이서린", phone: "01082969961",
     accounts: [
-      { bank: "농협", account: "779 01 287871", accountHolder: "이서린" },
+      { bank: "농협", account: "779-01-287871", accountHolder: "이서린" },
       { bank: "농협", account: "302-0938-5117-01", accountHolder: "이영미" },
     ],
   },
