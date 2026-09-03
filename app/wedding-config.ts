@@ -64,6 +64,8 @@ export const wedding = {
       weddingPhoto("moments-09-v1.webp"),
       weddingPhoto("moments-11-v1.webp"),
       weddingPhoto("moments-06-v1.webp"),
+      weddingPhoto("moments-10-v1.webp"),
+      weddingPhoto("moments-12-v1.webp"),
     ],
   },
   share: { title: "승현 ♥ 영미 결혼합니다", description: "2026년 12월 13일 일요일 오후 12시 30분" },
