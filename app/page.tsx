@@ -280,7 +280,7 @@ export default function Home() {
           <figure className="hero-frame"><img src={wedding.photos.cover} alt="신랑 신부의 대표 웨딩 사진" /></figure>
           <h1 className="hero-names"><span>SEUNGHYEON &amp; YOUNGMI</span></h1>
           <span className="hero-label-slot"><span className="hero-label hero-label-left">DEC 13, 2026</span></span>
-          <figure className="hero-frame"><img src={wedding.photos.gallery[0]} alt="신랑 신부의 웨딩 사진" /></figure>
+          <figure className="hero-frame"><img src={wedding.photos.heroSecond} alt="신랑 신부의 웨딩 사진" /></figure>
         </div>
         <div className="hero-copy">
           <p className="eyebrow">WE ARE GETTING MARRIED</p>

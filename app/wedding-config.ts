@@ -40,6 +40,7 @@ export const wedding = {
   ],
   photos: {
     cover: weddingPhoto("cover-v1.webp"),
+    heroSecond: weddingPhoto("hero-second-v1.webp"),
     share: weddingPhoto("share-v1.webp"),
     gallery: [
       weddingPhoto("gallery-01-v1.webp"),
