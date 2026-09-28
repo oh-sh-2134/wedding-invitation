@@ -163,16 +163,16 @@ main { width:min(100%, 430px); margin:0 auto; overflow:hidden; background:var(--
 
 .contact-description { margin:-22px 0 36px; font-size:13px; line-height:1.9; color:#858585; }
 .account { border:0; margin-bottom:10px; text-align:left; background:var(--soft); }
-.account summary { list-style:none; cursor:pointer; padding:18px; font-size:13px; font-weight:500; color:#555; }
+.account summary { list-style:none; cursor:pointer; padding:18px; font-size:13px; font-weight:600; color:#171717; }
 .account summary::-webkit-details-marker { display:none; }
 .account summary span { float:right; transition:transform .2s; }
 .account[open] summary span { transform:rotate(180deg); }
 .account-body { padding:0 18px 6px; border-top:1px solid #e0e0dc; background:var(--soft); }
 .account-item { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:16px 0; }
 .account-item + .account-item { border-top:1px solid #e0e0dc; }
-.account-body p { font-size:12px; margin:0 0 5px; color:#4f4f4f; }
-.account-body small { font-size:10px; color:#999; }
-.account-body button { flex:0 0 auto; border:0; background:#fff; padding:9px 11px; display:flex; gap:5px; align-items:center; font-size:11px; cursor:pointer; color:#555; }
+.account-body p { font-size:12px; margin:0 0 5px; color:#111; font-weight:500; }
+.account-body small { font-size:11px; color:#111; font-weight:600; }
+.account-body button { flex:0 0 auto; min-height:40px; border:0; background:#fff; padding:11px 13px; display:flex; gap:6px; align-items:center; font-size:11.5px; font-weight:600; white-space:nowrap; cursor:pointer; color:#111; }
 .account-body .icon { width:15px; }
 .call-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:25px; }
 .call-row a { display:flex; align-items:center; justify-content:center; gap:6px; padding:14px 5px; border:1px solid var(--faint); text-decoration:none; color:#555; font-size:11px; background:#fff; }
@@ -186,6 +186,11 @@ footer button { margin:auto; border:1px solid #d8d8d2; background:#fff; color:#5
 .lightbox img { max-width:100%; max-height:88vh; object-fit:contain; }
 .lightbox-close { position:absolute; top:20px; right:20px; background:#f1f1ef; border:0; color:#555; padding:8px; cursor:pointer; }
 .lightbox-close .icon { width:28px; height:28px; }
+.lightbox-nav { position:absolute; z-index:2; top:50%; width:46px; height:46px; transform:translateY(-50%); display:grid; place-items:center; padding:0; border:1px solid rgba(0,0,0,.08); border-radius:50%; background:rgba(255,255,255,.9); color:#222; box-shadow:0 4px 16px rgba(0,0,0,.12); cursor:pointer; }
+.lightbox-nav span { display:block; margin-top:-3px; font-family:Arial,sans-serif; font-size:36px; font-weight:300; line-height:1; }
+.lightbox-prev { left:10px; }
+.lightbox-next { right:10px; }
+.lightbox-nav:focus-visible { outline:2px solid #222; outline-offset:3px; }
 .toast { position:fixed; z-index:1100; left:50%; bottom:calc(25px + env(safe-area-inset-bottom, 0px)); transform:translate(-50%,20px); padding:11px 18px; border-radius:30px; background:#333; color:white; font-size:11px; opacity:0; pointer-events:none; transition:.25s; white-space:nowrap; }
 .toast.visible { opacity:1; transform:translate(-50%,0); }
 

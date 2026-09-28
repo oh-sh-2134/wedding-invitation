@@ -177,10 +177,18 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedPhoto === null) return;
-    const close = (event: KeyboardEvent) => event.key === "Escape" && setSelectedPhoto(null);
-    document.addEventListener("keydown", close);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedPhoto(null);
+      if (event.key === "ArrowLeft") {
+        setSelectedPhoto((current) => current === null ? null : (current - 1 + galleryPhotos.length) % galleryPhotos.length);
+      }
+      if (event.key === "ArrowRight") {
+        setSelectedPhoto((current) => current === null ? null : (current + 1) % galleryPhotos.length);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
-    return () => { document.removeEventListener("keydown", close); document.body.style.overflow = ""; };
+    return () => { document.removeEventListener("keydown", handleKeyDown); document.body.style.overflow = ""; };
   }, [selectedPhoto]);
 
   useEffect(() => {
@@ -409,7 +417,7 @@ export default function Home() {
               {person.accounts.map((account) => (
                 <div className="account-item" key={`${account.bank}-${account.account}`}>
                   <div><p>{account.bank} {account.account}</p><small>예금주 {account.accountHolder}</small></div>
-                  <button onClick={() => copy(account.account, "계좌번호")} aria-label={`${account.accountHolder} 계좌번호 복사`}><Icon name="copy" />복사</button>
+                  <button onClick={() => copy(account.account, "계좌번호")} aria-label={`${account.accountHolder} 계좌번호 복사`}><Icon name="copy" />계좌번호 복사</button>
                 </div>
               ))}
             </div>
@@ -429,7 +437,27 @@ export default function Home() {
       {selectedPhoto !== null && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="웨딩 사진 크게 보기" onClick={() => setSelectedPhoto(null)}>
           <button className="lightbox-close" aria-label="사진 닫기" onClick={() => setSelectedPhoto(null)}><Icon name="close" /></button>
+          <button
+            className="lightbox-nav lightbox-prev"
+            aria-label="이전 사진 보기"
+            onClick={(event) => {
+              event.stopPropagation();
+              setSelectedPhoto((current) => current === null ? null : (current - 1 + galleryPhotos.length) % galleryPhotos.length);
+            }}
+          >
+            <span aria-hidden="true">‹</span>
+          </button>
           <img src={galleryPhotos[selectedPhoto]} alt={`웨딩 사진 ${selectedPhoto + 1} 크게 보기`} onClick={(e) => e.stopPropagation()} />
+          <button
+            className="lightbox-nav lightbox-next"
+            aria-label="다음 사진 보기"
+            onClick={(event) => {
+              event.stopPropagation();
+              setSelectedPhoto((current) => current === null ? null : (current + 1) % galleryPhotos.length);
+            }}
+          >
+            <span aria-hidden="true">›</span>
+          </button>
         </div>
       )}
       <div className={`toast ${toast ? "visible" : ""}`} role="status">{toast}</div>
